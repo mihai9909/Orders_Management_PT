@@ -56,4 +56,8 @@ public class Client {
     public void setAge(int age) {
         this.age = age;
     }
+
+    public String toString() {
+        return "Client [id=" + id + ", name=" + name + ", address=" + address + ", email=" + email +  ", age=" + age + "]";
+    }
 }
