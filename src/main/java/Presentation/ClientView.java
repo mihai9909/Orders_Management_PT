@@ -1,6 +1,10 @@
 package Presentation;
 
 
+import DataAccess.AbstractDAO;
+import DataAccess.ClientDAO;
+import Model.Client;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -33,12 +37,17 @@ public class ClientView extends JPanel {
     private JTextField editAge;
     private JButton editBtn;
     private JLabel jcomp26;
-    private JTextField jcomp27;
+    private JTextField deleteByID;
     private JLabel jcomp28;
     private JButton deleteBtn;
     private JButton viewClientsBtn;
 
+    AbstractDAO clientDAO;
+
     public ClientView() {
+
+        clientDAO = new ClientDAO();
+
         //construct components
         jcomp1 = new JButton ("Button 1");
         addID = new JTextField (5);
@@ -66,7 +75,7 @@ public class ClientView extends JPanel {
         editAge = new JTextField (5);
         editBtn = new JButton ("EDIT");
         jcomp26 = new JLabel ("Delete Client");
-        jcomp27 = new JTextField (5);
+        deleteByID = new JTextField (5);
         jcomp28 = new JLabel ("Client ID");
         deleteBtn = new JButton ("DELETE");
         viewClientsBtn = new JButton ("View Clients");
@@ -102,7 +111,7 @@ public class ClientView extends JPanel {
         add (editAge);
         add (editBtn);
         add (jcomp26);
-        add (jcomp27);
+        add (deleteByID);
         add (jcomp28);
         add (deleteBtn);
         add (viewClientsBtn);
@@ -134,9 +143,59 @@ public class ClientView extends JPanel {
         editAge.setBounds (870, 210, 70, 25);
         editBtn.setBounds (990, 210, 100, 25);
         jcomp26.setBounds (35, 260, 100, 25);
-        jcomp27.setBounds (35, 335, 100, 25);
+        deleteByID.setBounds (35, 335, 100, 25);
         jcomp28.setBounds (35, 295, 100, 25);
         deleteBtn.setBounds (170, 335, 100, 25);
         viewClientsBtn.setBounds (500, 415, 140, 25);
+
+        submitBtn.addActionListener(new SubmitBtnListener());
+        editBtn.addActionListener(new EditBtnListener());
+        deleteBtn.addActionListener(new DeleteBtnListener());
+        viewClientsBtn.addActionListener(new ViewClientsListener());
+    }
+
+    public class SubmitBtnListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int id = Integer.parseInt(addID.getText());
+            String name = addName.getText();
+            String addr = addAddress.getText();
+            String email = addEmail.getText();
+            int age = Integer.parseInt(addAge.getText());
+
+            Client c = new Client(id,name,addr,email,age);
+            clientDAO.insert(c);
+        }
+    }
+
+    public class EditBtnListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int id = Integer.parseInt(clientToEditByID.getText());
+            String name = editName.getText();
+            String addr = editAddress.getText();
+            String email = editEmail.getText();
+            int age = Integer.parseInt(editAge.getText());
+
+            Client c = new Client(id,name,addr,email,age);
+            clientDAO.update(c);
+        }
+    }
+
+    public class DeleteBtnListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int id = Integer.parseInt(deleteByID.getText());
+            clientDAO.deleteById(id);
+        }
+    }
+
+    public class ViewClientsListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e){
+            new Table(clientDAO.getHeader(), clientDAO.getData());
+        }
     }
 }

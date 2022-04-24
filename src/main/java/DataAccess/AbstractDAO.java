@@ -199,4 +199,38 @@ public class AbstractDAO<T> {
             ConnectionFactory.close(connection);
         }
     }
+
+    public String[] getHeader(){
+        List<String> al = new ArrayList<>();
+        int i = 0;
+        for (Field field : type.getDeclaredFields()) {
+            String fieldName = field.getName();
+            al.add(fieldName);
+        }
+        String []res = new String[al.size()];
+        return al.toArray(res);
+    }
+
+    public String[][] getData() {
+        List<T> objects = findAll();
+        String [][]data = new String[objects.size()][getHeader().length];
+        int i = 0;
+        try {
+            for (Object obj : objects) {
+                int j = 0;
+                for (Field field : type.getDeclaredFields()) {
+                    String fieldName = field.getName();
+                    PropertyDescriptor propertyDescriptor = new PropertyDescriptor(fieldName, type);
+                    Method getter = propertyDescriptor.getReadMethod();
+                    Object res = getter.invoke(obj);
+                    data[i][j] = res.toString();
+                    j++;
+                }
+                i++;
+            }
+        } catch (IntrospectionException | InvocationTargetException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return data;
+    }
 }

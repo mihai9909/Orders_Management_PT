@@ -1,12 +1,16 @@
 package Presentation;
 
+import DataAccess.AbstractDAO;
+import DataAccess.ProductDAO;
+import Model.Product;
+
 import java.awt.*;
 import java.awt.event.*;
+import java.math.BigDecimal;
 import javax.swing.*;
 import javax.swing.event.*;
 
 public class ProductView extends JPanel {
-    private JButton jcomp1;
     private JTextField addID;
     private JLabel jcomp3;
     private JLabel jcomp4;
@@ -33,9 +37,12 @@ public class ProductView extends JPanel {
     private JButton deleteBtn;
     private JButton viewProductsBtn;
 
+    AbstractDAO productDAO;
+
     public ProductView() {
+
+        productDAO = new ProductDAO();
         //construct components
-        jcomp1 = new JButton("Button 1");
         addID = new JTextField(5);
         jcomp3 = new JLabel("ID");
         jcomp4 = new JLabel("quantity");
@@ -67,7 +74,6 @@ public class ProductView extends JPanel {
         setLayout(null);
 
         //add components
-        add(jcomp1);
         add(addID);
         add(jcomp3);
         add(jcomp4);
@@ -95,7 +101,6 @@ public class ProductView extends JPanel {
         add(viewProductsBtn);
 
         //set component bounds (only needed by Absolute Positioning)
-        jcomp1.setBounds(-530, -15, 100, 20);
         addID.setBounds(35, 90, 100, 25);
         jcomp3.setBounds(35, 55, 100, 25);
         jcomp4.setBounds(170, 55, 100, 25);
@@ -121,5 +126,51 @@ public class ProductView extends JPanel {
         jcomp24.setBounds(35, 295, 100, 25);
         deleteBtn.setBounds(170, 335, 100, 25);
         viewProductsBtn.setBounds(500, 415, 140, 25);
+
+        submitBtn.addActionListener(new SubmitBtnListener());
+        editBtn.addActionListener(new EditBtnListener());
+        deleteBtn.addActionListener(new DeleteBtnListener());
+        viewProductsBtn.addActionListener(new ViewProductsListener());
+    }
+
+    public class SubmitBtnListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int id = Integer.parseInt(addID.getText());
+            int quantity = Integer.parseInt(addQuantity.getText());
+            String name = addName.getText();
+            String price = addPrice.getText();
+
+            Product c = new Product(id,quantity,name,new BigDecimal("" + price));
+            productDAO.insert(c);
+        }
+    }
+
+    public class EditBtnListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int id = Integer.parseInt(productToEditByID.getText());
+            int quantity = Integer.parseInt(editQuantity.getText());
+            String name = editName.getText();
+            String price = editPrice.getText();
+
+            Product c = new Product(id,quantity,name,new BigDecimal("" + price));
+            productDAO.update(c);
+        }
+    }
+
+    public class DeleteBtnListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int id = Integer.parseInt(prodToDelID.getText());
+            productDAO.deleteById(id);
+        }
+    }
+
+    public class ViewProductsListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e){
+            new Table(productDAO.getHeader(), productDAO.getData());
+        }
     }
 }
