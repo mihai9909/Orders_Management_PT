@@ -11,7 +11,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-
+/***Panel to perform the order operations*/
 public class OrderView extends JPanel {
     private JButton jcomp1;
     private JLabel jcomp2;

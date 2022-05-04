@@ -5,11 +5,13 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
+/***Menu view for products*/
 public class Menu extends JPanel {
     private JButton clientsBtn;
     private JButton prodBtn;
     private JButton ordBtn;
 
+    /***Initialize components*/
     public Menu() {
         //construct components
         clientsBtn = new JButton ("Clients");
@@ -34,7 +36,7 @@ public class Menu extends JPanel {
         prodBtn.addActionListener(new ProductBtnListener());
         ordBtn.addActionListener(new OrderBtnListener());
     }
-
+    /***Listener for button*/
     public class OrderBtnListener implements ActionListener{
 
         @Override
@@ -46,7 +48,7 @@ public class Menu extends JPanel {
             frame.setVisible(true);
         }
     }
-
+    /***Listener for button*/
     public class ProductBtnListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -57,7 +59,7 @@ public class Menu extends JPanel {
             frame.setVisible(true);
         }
     }
-
+    /****Listener for button*/
     public class ClientsBtnListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {

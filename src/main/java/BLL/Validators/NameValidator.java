@@ -2,6 +2,7 @@ package BLL.Validators;
 
 import Model.Client;
 
+/**Validates Client Name*/
 public class NameValidator implements Validator<Client>{
     @Override
     public void validate(Client client) {

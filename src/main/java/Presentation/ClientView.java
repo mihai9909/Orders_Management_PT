@@ -10,7 +10,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
-
+/**Panel to perform the client operations*/
 public class ClientView extends JPanel {
     private JButton jcomp1;
     private JTextField addID;

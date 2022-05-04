@@ -2,6 +2,7 @@ package BLL.Validators;
 
 import Model.Client;
 
+/**Validates Age*/
 public class ClientAgeValidator implements Validator<Client> {
     private static final int MIN_AGE = 18;
     private static final int MAX_AGE = 120;

@@ -4,6 +4,7 @@ import DataAccess.AbstractDAO;
 
 import javax.swing.*;
 
+/**Swing table used to display products / clients / orders*/
 public class Table extends JFrame {
     private JScrollPane scrollPane;
     private JTable table;

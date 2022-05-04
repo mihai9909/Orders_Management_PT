@@ -2,6 +2,7 @@ package BLL.Validators;
 
 import Model.Product;
 
+/**Validates quantity*/
 public class QuantityValidator implements Validator<Product> {
     @Override
     public void validate(Product product) {

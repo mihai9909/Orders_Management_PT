@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+/**Class used to perform validations on the product before running the CRUD operations*/
 public class ProductBLL {
 
     private List<Validator<Product>> validators;
@@ -24,7 +25,7 @@ public class ProductBLL {
 
         productDAO = new ProductDAO();
     }
-
+    /**Validate then create*/
     public void createNewProduct(Product c){
         for (Validator<Product> v: validators) {
             v.validate(c);
@@ -32,10 +33,7 @@ public class ProductBLL {
         productDAO.createProduct(c);
     }
 
-    public List<Product> findAllProducts(){
-        return productDAO.find();
-    }
-
+    /**Read then return the result*/
     public Product findProductById(int id){
         Product st = productDAO.findById(id);
         if (st == null) {
@@ -43,7 +41,7 @@ public class ProductBLL {
         }
         return st;
     }
-
+    /**Validate then update*/
     public void editProduct(Product p){
         if(findProductById(p.getId()) == null){
             throw new NoSuchElementException("Product with id = "+ p.getId() +"does not exist");
@@ -53,7 +51,7 @@ public class ProductBLL {
         }
         productDAO.updateProduct(p);
     }
-
+    /**Delete*/
     public void deleteProduct(int id){
         productDAO.deleteProduct(id);
     }

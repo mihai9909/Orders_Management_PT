@@ -10,6 +10,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/*Abstract to map database elements to classes and perform CRUD operations*/
 public class AbstractDAO<T> {
     protected static final Logger LOGGER = Logger.getLogger(AbstractDAO.class.getName());
     private final Class<T> type;

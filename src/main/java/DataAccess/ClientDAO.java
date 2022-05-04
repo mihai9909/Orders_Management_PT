@@ -4,6 +4,7 @@ import Model.Client;
 
 import java.util.List;
 
+/**CRUD Methods for clients*/
 public class ClientDAO extends AbstractDAO<Client> {
 
     // uses basic CRUD methods from superclass

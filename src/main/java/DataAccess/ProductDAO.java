@@ -5,6 +5,7 @@ import Model.Product;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**CRUD Methods for products*/
 public class ProductDAO extends AbstractDAO<Product>{
 
     public Product find(int id){

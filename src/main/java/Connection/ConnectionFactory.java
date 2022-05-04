@@ -3,6 +3,7 @@ package Connection;
 import java.sql.*;
 import java.util.logging.Logger;
 
+/**Factory class used to establish connection to the database*/
 public class ConnectionFactory {
     private static final Logger LOGGER = Logger.getLogger(ConnectionFactory.class.getName());
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
@@ -22,6 +23,8 @@ public class ConnectionFactory {
             e.printStackTrace();
         }
     }
+
+    /**Creates connections*/
     private Connection createConnection(){
         try {
             connection = DriverManager.getConnection(DBURL, USER, PASS);
@@ -47,6 +50,7 @@ public class ConnectionFactory {
         }
     }
 
+    /**Closes connection*/
     public static void close(Statement statement){
         if(statement == null)
             return;

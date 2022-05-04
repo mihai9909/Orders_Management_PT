@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 
+/**CRUD Methods for orders*/
 public class OrderDAO extends AbstractDAO<Order> {
 
     public Order find(int id){
