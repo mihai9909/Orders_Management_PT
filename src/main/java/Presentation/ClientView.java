@@ -1,6 +1,7 @@
 package Presentation;
 
 
+import BLL.ClientBLL;
 import DataAccess.AbstractDAO;
 import DataAccess.ClientDAO;
 import Model.Client;
@@ -43,6 +44,8 @@ public class ClientView extends JPanel {
     private JButton viewClientsBtn;
 
     AbstractDAO clientDAO;
+
+    ClientBLL clientBLL;
 
     public ClientView() {
 
@@ -152,20 +155,29 @@ public class ClientView extends JPanel {
         editBtn.addActionListener(new EditBtnListener());
         deleteBtn.addActionListener(new DeleteBtnListener());
         viewClientsBtn.addActionListener(new ViewClientsListener());
+
+        clientBLL = new ClientBLL();
     }
 
     public class SubmitBtnListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            int id = Integer.parseInt(addID.getText());
             String name = addName.getText();
             String addr = addAddress.getText();
             String email = addEmail.getText();
-            int age = Integer.parseInt(addAge.getText());
+            int age = 0;
+            int id = 0;
+            try {
+                id = Integer.parseInt(addID.getText());
+                age = Integer.parseInt(addAge.getText());
+            }catch (NumberFormatException exception){
+                System.err.println("Invalid age or ID");
+                return;
+            }
 
             Client c = new Client(id,name,addr,email,age);
-            clientDAO.insert(c);
+            clientBLL.createNewClient(c);
         }
     }
 
@@ -173,22 +185,37 @@ public class ClientView extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            int id = Integer.parseInt(clientToEditByID.getText());
             String name = editName.getText();
             String addr = editAddress.getText();
             String email = editEmail.getText();
-            int age = Integer.parseInt(editAge.getText());
+            int age = 0;
+            int id = 0;
+            try {
+                id = Integer.parseInt(clientToEditByID.getText());
+                age = Integer.parseInt(editAge.getText());
+            }catch (NumberFormatException exception){
+                System.err.println("Invalid age or ID");
+                exception.printStackTrace();
+                return;
+            }
 
             Client c = new Client(id,name,addr,email,age);
-            clientDAO.update(c);
+
+            clientBLL.editClient(c);
         }
     }
 
     public class DeleteBtnListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            int id = Integer.parseInt(deleteByID.getText());
-            clientDAO.deleteById(id);
+            int id = 0;
+            try{
+                id = Integer.parseInt(deleteByID.getText());
+            }catch (NumberFormatException exception){
+                System.err.println("Invalid id");
+                return;
+            }
+            clientBLL.deleteClient(id);
         }
     }
 

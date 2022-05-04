@@ -17,7 +17,6 @@ public class AbstractDAO<T> {
     @SuppressWarnings("unchecked")
     public AbstractDAO() {
         this.type = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-        System.out.println(type.getSimpleName());
     }
 
     private String createSelectQuery(String field) {
@@ -72,6 +71,7 @@ public class AbstractDAO<T> {
             statement.setInt(1, id);
             resultSet = statement.executeQuery();
 
+
             return createObjects(resultSet).get(0);
         } catch (SQLException e) {
             LOGGER.log(Level.WARNING, type.getName() + "DAO:findById " + e.getMessage());
@@ -111,6 +111,8 @@ public class AbstractDAO<T> {
         } finally {
             ConnectionFactory.close(resultSet);
         }
+        if(list.isEmpty())
+            throw new IllegalArgumentException("No Elements found");
         return list;
     }
 

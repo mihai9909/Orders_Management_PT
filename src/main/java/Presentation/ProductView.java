@@ -1,5 +1,6 @@
 package Presentation;
 
+import BLL.ProductBLL;
 import DataAccess.AbstractDAO;
 import DataAccess.ProductDAO;
 import Model.Product;
@@ -10,6 +11,9 @@ import java.math.BigDecimal;
 import javax.swing.*;
 import javax.swing.event.*;
 
+/*
+* Panel for products
+* */
 public class ProductView extends JPanel {
     private JTextField addID;
     private JLabel jcomp3;
@@ -39,6 +43,9 @@ public class ProductView extends JPanel {
 
     AbstractDAO productDAO;
 
+    ProductBLL productBLL;
+
+    /*Initialize components*/
     public ProductView() {
 
         productDAO = new ProductDAO();
@@ -131,26 +138,41 @@ public class ProductView extends JPanel {
         editBtn.addActionListener(new EditBtnListener());
         deleteBtn.addActionListener(new DeleteBtnListener());
         viewProductsBtn.addActionListener(new ViewProductsListener());
+
+        productBLL = new ProductBLL();
     }
 
+    /*Listener for submit button*/
     public class SubmitBtnListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            int id = Integer.parseInt(addID.getText());
-            int quantity = Integer.parseInt(addQuantity.getText());
+            int id = 0, quantity = 0;
+            try {
+                id = Integer.parseInt(addID.getText());
+                quantity = Integer.parseInt(addQuantity.getText());
+            }catch (NumberFormatException exception){
+                System.err.println("Invalid id or quantity");
+                return;
+            }
             String name = addName.getText();
             String price = addPrice.getText();
 
             Product c = new Product(id,quantity,name,new BigDecimal("" + price));
-            productDAO.insert(c);
+            productBLL.createNewProduct(c);
         }
     }
-
+    /*Listener for edit button*/
     public class EditBtnListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            int id = Integer.parseInt(productToEditByID.getText());
-            int quantity = Integer.parseInt(editQuantity.getText());
+            int id=0,quantity=0;
+            try {
+                id = Integer.parseInt(productToEditByID.getText());
+                quantity = Integer.parseInt(editQuantity.getText());
+            }catch (NumberFormatException exception){
+                System.err.println("Invalid id or quantity");
+                return;
+            }
             String name = editName.getText();
             String price = editPrice.getText();
 
@@ -158,15 +180,21 @@ public class ProductView extends JPanel {
             productDAO.update(c);
         }
     }
-
+    /*Listener for delete button*/
     public class DeleteBtnListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            int id = Integer.parseInt(prodToDelID.getText());
+            int id = 0;
+            try{
+             id = Integer.parseInt(prodToDelID.getText());
+            }catch (NumberFormatException exception){
+                System.err.println("Invalid id or quantity");
+                return;
+            }
             productDAO.deleteById(id);
         }
     }
-
+    /*Listener for show products button*/
     public class ViewProductsListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e){
